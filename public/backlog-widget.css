@@ -1,0 +1,227 @@
+/* ==========================================
+ * BACKLOG WIDGET - Floating UI Component
+ * ==========================================
+ * Ajouter cet élément en bas de toutes tes pages HTML
+ */
+
+.backlog-widget {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+.backlog-toggle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.backlog-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 30px rgba(102, 126, 234, 0.6);
+}
+
+.backlog-panel {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 380px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    display: none;
+    flex-direction: column;
+    max-height: 500px;
+}
+
+.backlog-panel.show {
+    display: flex;
+}
+
+.backlog-header {
+    padding: 20px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.backlog-header h3 {
+    margin: 0;
+    color: #333;
+    font-size: 1.2em;
+}
+
+.backlog-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+}
+
+.backlog-close:hover {
+    color: #333;
+}
+
+.backlog-form {
+    padding: 20px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.backlog-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1em;
+    margin-bottom: 12px;
+    resize: none;
+    font-family: inherit;
+}
+
+.backlog-input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.backlog-options {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 50px;
+    height: 26px;
+    background: #e2e8f0;
+    border-radius: 13px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.toggle-switch.active {
+    background: #f56565;
+}
+
+.toggle-switch::after {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: white;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s;
+}
+
+.toggle-switch.active::after {
+    transform: translateX(24px);
+}
+
+.toggle-label {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.backlog-submit {
+    width: 100%;
+    padding: 12px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.backlog-submit:hover {
+    background: #5a67d8;
+    transform: translateY(-1px);
+}
+
+.backlog-submit:active {
+    transform: translateY(0);
+}
+
+.backlog-count {
+    padding: 15px 20px;
+    text-align: center;
+    color: #666;
+    font-size: 0.9em;
+}
+
+.backlog-view-all {
+    display: block;
+    padding: 15px 20px;
+    background: #f7fafc;
+    color: #667eea;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 0 0 16px 16px;
+    transition: background 0.3s;
+}
+
+.backlog-view-all:hover {
+    background: #edf2f7;
+}
+
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    background: #48bb78;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 10000;
+    animation: slideIn 0.3s;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+    .backlog-panel {
+        width: calc(100vw - 40px);
+        right: 20px;
+        left: 20px;
+    }
+}

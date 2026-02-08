@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Saved credentials (local only)
+.saved-token.json
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Data directory (sera géré par Railway Volume + auto-sync partiel)
+data/*.json
+data/*.db
+data/*.sqlite
+
+# Garder backlog.md dans git pour sync
+!data/backlog.md
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# Temporary files
+tmp/
+temp/
+*.tmp
