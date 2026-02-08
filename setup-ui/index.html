@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🚀 Nouveau Projet - Wizard</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <div class="container">
         <header>
@@ -38,17 +40,20 @@
             <div class="step" id="step2">
                 <h2>📁 Étape 2 : Où créer le projet ?</h2>
                 <p class="help-text">Laisse vide pour utiliser le dossier par défaut</p>
-                <input type="text" id="destinationPath" placeholder="Dossier par défaut (Mes Documents/APPS)" class="input-field">
+                <input type="text" id="destinationPath" placeholder="Dossier par défaut (Mes Documents/APPS)"
+                    class="input-field">
                 <p class="tip">💡 Par défaut: [Ton Dossier Utilisateur]\APPS</p>
             </div>
 
             <!-- Étape 3: GitHub Repository -->
             <div class="step" id="step3">
                 <h2>🔗 Étape 3 : Configuration GitHub</h2>
-                
-                <div class="checkbox-container" style="margin-bottom: 20px; background: #e3f2fd; padding: 10px; border-radius: 8px;">
-                    <input type="checkbox" id="enableGithub" checked>
-                    <label for="enableGithub"><strong>Configurer GitHub (Recommandé)</strong></label>
+
+                <div class="checkbox-container"
+                    style="margin-bottom: 20px; background: #e3f2fd; padding: 10px; border-radius: 8px;">
+                    <input type="checkbox" id="enableGithub">
+                    <label for="enableGithub"><strong>Configurer GitHub pour le futur déploiement
+                            (Optionnel)</strong></label>
                 </div>
 
                 <div id="githubSection">
@@ -79,13 +84,14 @@
             <!-- Étape 4: GitHub Token -->
             <div class="step" id="step4">
                 <h2>🔑 Étape 4 : Token GitHub</h2>
-                
+
                 <div id="githubTokenSection">
                     <div class="tutorial-box">
                         <h3>📚 Comment créer un token ?</h3>
                         <ol class="tutorial-list">
                             <li>
-                                Va sur <a href="https://github.com/settings/tokens" target="_blank" class="link">Developer Settings</a>
+                                Va sur <a href="https://github.com/settings/tokens" target="_blank"
+                                    class="link">Developer Settings</a>
                             </li>
                             <li>
                                 Generate new token (classic)
@@ -105,7 +111,7 @@
                         <label for="showToken">Afficher le token</label>
                     </div>
                 </div>
-                
+
                 <div id="githubSkippedMsg" style="display: none; text-align: center; padding: 20px; color: #666;">
                     <p>Configuration GitHub ignorée.</p>
                     <p>Tu pourras configurer Git manuellement plus tard.</p>
@@ -115,16 +121,17 @@
             <!-- Étape 5: Secrets supplémentaires -->
             <div class="step" id="step5">
                 <h2>🔐 Étape 5 : Secrets Supplémentaires (Optionnel)</h2>
-                <p class="help-text">Ajoute des clés API ou autres secrets maintenant (tu pourras aussi le faire plus tard)</p>
-                
+                <p class="help-text">Ajoute des clés API ou autres secrets maintenant (tu pourras aussi le faire plus
+                    tard)</p>
+
                 <div id="secretsContainer">
                     <!-- Les secrets seront ajoutés ici dynamiquement -->
                 </div>
-                
+
                 <button type="button" class="btn btn-secondary" onclick="addSecret()">
                     ➕ Ajouter un secret
                 </button>
-                
+
                 <p class="tip">💡 Exemples: DISCORD_TOKEN, API_KEY, DATABASE_URL, etc.</p>
             </div>
 
@@ -147,7 +154,8 @@
 
         <!-- Boutons de navigation -->
         <div class="navigation">
-            <button type="button" class="btn btn-secondary" id="prevBtn" onclick="previousStep()" style="display: none;">
+            <button type="button" class="btn btn-secondary" id="prevBtn" onclick="previousStep()"
+                style="display: none;">
                 ← Précédent
             </button>
             <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextStep()">
@@ -158,4 +166,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>
