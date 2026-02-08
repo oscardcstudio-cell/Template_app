@@ -27,7 +27,10 @@
             <div class="step active" id="step1">
                 <h2>📝 Étape 1 : Nom du Projet</h2>
                 <p class="help-text">Choisis un nom pour ton projet (ex: mon-super-bot, trading-app, etc.)</p>
-                <input type="text" id="projectName" placeholder="mon-super-projet" class="input-field">
+                <div class="input-group">
+                    <input type="text" id="projectName" placeholder="mon-super-projet" class="input-field">
+                    <button type="button" class="btn btn-secondary" id="copyBtn" title="Copier le nom">📋</button>
+                </div>
                 <p class="tip">💡 Utilise des tirets (-) au lieu des espaces</p>
             </div>
 
@@ -35,82 +38,78 @@
             <div class="step" id="step2">
                 <h2>📁 Étape 2 : Où créer le projet ?</h2>
                 <p class="help-text">Laisse vide pour utiliser le dossier par défaut</p>
-                <input type="text" id="destinationPath" placeholder="C:\Users\oscar\APPS" class="input-field">
-                <p class="tip">💡 Par défaut: C:\Users\oscar\APPS</p>
+                <input type="text" id="destinationPath" placeholder="Dossier par défaut (Mes Documents/APPS)" class="input-field">
+                <p class="tip">💡 Par défaut: [Ton Dossier Utilisateur]\APPS</p>
             </div>
 
             <!-- Étape 3: GitHub Repository -->
             <div class="step" id="step3">
-                <h2>🔗 Étape 3 : Repository GitHub</h2>
+                <h2>🔗 Étape 3 : Configuration GitHub</h2>
                 
-                <div class="tutorial-box">
-                    <h3>📚 Comment créer un repo GitHub ?</h3>
-                    <ol class="tutorial-list">
-                        <li>
-                            Ouvre <a href="https://github.com/new" target="_blank" class="link">github.com/new</a> dans un nouvel onglet
-                        </li>
-                        <li>
-                            Dans "Repository name", écris le même nom que ton projet
-                        </li>
-                        <li>
-                            Choisis "Public" ou "Private"
-                        </li>
-                        <li>
-                            <strong>NE COCHE PAS</strong> "Add a README file" (on a déjà nos fichiers)
-                        </li>
-                        <li>
-                            Clique sur "Create repository"
-                        </li>
-                        <li>
-                            Copie le nom du repo (format: <code>ton-username/ton-repo</code>)
-                        </li>
-                    </ol>
+                <div class="checkbox-container" style="margin-bottom: 20px; background: #e3f2fd; padding: 10px; border-radius: 8px;">
+                    <input type="checkbox" id="enableGithub" checked>
+                    <label for="enableGithub"><strong>Configurer GitHub (Recommandé)</strong></label>
                 </div>
 
-                <input type="text" id="githubRepo" placeholder="ton-username/ton-repo" class="input-field">
-                <p class="tip">💡 Exemple: oscar/mon-super-bot</p>
+                <div id="githubSection">
+                    <p class="help-text">Repository GitHub</p>
+                    <div class="tutorial-box">
+                        <h3>📚 Comment créer un repo GitHub ?</h3>
+                        <ol class="tutorial-list">
+                            <li>
+                                Ouvre <a href="https://github.com/new" target="_blank" class="link">github.com/new</a>
+                            </li>
+                            <li>
+                                Nomme le repo comme ton projet
+                            </li>
+                            <li>
+                                Clique sur "Create repository"
+                            </li>
+                            <li>
+                                Copie le nom (ex: <code>ton-user/ton-repo</code>)
+                            </li>
+                        </ol>
+                    </div>
+
+                    <input type="text" id="githubRepo" placeholder="ton-username/ton-repo" class="input-field">
+                    <p class="tip">💡 Exemple: oscar/mon-super-bot</p>
+                </div>
             </div>
 
             <!-- Étape 4: GitHub Token -->
             <div class="step" id="step4">
                 <h2>🔑 Étape 4 : Token GitHub</h2>
                 
-                <div class="tutorial-box">
-                    <h3>📚 Comment créer un token GitHub ?</h3>
-                    <ol class="tutorial-list">
-                        <li>
-                            Ouvre <a href="https://github.com/settings/tokens" target="_blank" class="link">github.com/settings/tokens</a>
-                        </li>
-                        <li>
-                            Clique sur "Generate new token" → "Generate new token (classic)"
-                        </li>
-                        <li>
-                            Dans "Note", écris: <code>Railway Deploy Token</code>
-                        </li>
-                        <li>
-                            Dans "Expiration", choisis "No expiration" (ou selon ta préférence)
-                        </li>
-                        <li>
-                            Coche la case <strong>repo</strong> (toutes les sous-cases se cocheront automatiquement)
-                        </li>
-                        <li>
-                            Descends en bas et clique sur "Generate token"
-                        </li>
-                        <li>
-                            <strong>COPIE LE TOKEN IMMÉDIATEMENT</strong> (tu ne pourras plus le revoir !)
-                        </li>
-                        <li>
-                            Colle le token ci-dessous
-                        </li>
-                    </ol>
-                </div>
+                <div id="githubTokenSection">
+                    <div class="tutorial-box">
+                        <h3>📚 Comment créer un token ?</h3>
+                        <ol class="tutorial-list">
+                            <li>
+                                Va sur <a href="https://github.com/settings/tokens" target="_blank" class="link">Developer Settings</a>
+                            </li>
+                            <li>
+                                Generate new token (classic)
+                            </li>
+                            <li>
+                                Coche la case <strong>repo</strong>
+                            </li>
+                            <li>
+                                Generate et Copie le token
+                            </li>
+                        </ol>
+                    </div>
 
-                <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxx" class="input-field">
-                <div class="checkbox-container">
-                    <input type="checkbox" id="showToken">
-                    <label for="showToken">Afficher le token</label>
+                    <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxx" class="input-field">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="showToken">
+                        <label for="showToken">Afficher le token</label>
+                    </div>
                 </div>
-                <p class="tip">💡 Ce token est nécessaire pour l'auto-sync GitHub sur Railway</p>
+                
+                <div id="githubSkippedMsg" style="display: none; text-align: center; padding: 20px; color: #666;">
+                    <p>Configuration GitHub ignorée.</p>
+                    <p>Tu pourras configurer Git manuellement plus tard.</p>
+                </div>
             </div>
 
             <!-- Étape 5: Secrets supplémentaires -->

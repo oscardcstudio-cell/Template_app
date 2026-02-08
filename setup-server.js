@@ -2,6 +2,7 @@ import express from 'express';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import os from 'os';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,7 +20,9 @@ const TOKEN_FILE = path.join(__dirname, '.saved-token.json');
 app.post('/api/save-token', async (req, res) => {
     try {
         const { githubToken } = req.body;
-        await fs.writeFile(TOKEN_FILE, JSON.stringify({ token: githubToken }, null, 2));
+        if (githubToken) {
+            await fs.writeFile(TOKEN_FILE, JSON.stringify({ token: githubToken }, null, 2));
+        }
         res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -59,15 +62,11 @@ app.post('/api/create-project', async (req, res) => {
             return res.status(400).json({ error: 'Le nom du projet est requis' });
         }
 
-        if (!githubRepo) {
-            return res.status(400).json({ error: 'Le repo GitHub est requis' });
-        }
+        // GitHub est maintenant OPTIONNEL
+        // On ne vérifie plus githubRepo et githubToken ici
 
-        if (!githubToken) {
-            return res.status(400).json({ error: 'Le token GitHub est requis' });
-        }
-
-        const destPath = destinationPath || 'C:\\Users\\oscar\\APPS';
+        const defaultDest = path.join(os.homedir(), 'APPS');
+        const destPath = destinationPath || defaultDest;
         const projectPath = path.join(destPath, projectName);
 
         // Vérifier si le dossier existe déjà
@@ -81,17 +80,17 @@ app.post('/api/create-project', async (req, res) => {
         // Créer le dossier de destination
         await fs.mkdir(destPath, { recursive: true });
 
-        // IMPORTANT: Le template est TOUJOURS dans C:\Users\oscar\APPS\TEMPLATE_APP
-        // On ne copie JAMAIS depuis __dirname car si le script est lancé depuis un projet créé, ça fait une boucle infinie
-        const templatePath = 'C:\\Users\\oscar\\APPS\\TEMPLATE_APP';
+        // IMPORTANT: On utilise process.cwd() pour trouver le template par rapport à l'endroit où le script est lancé
+        // Cela permet de supporter n'importe quel emplacement d'installation
+        const templatePath = process.cwd();
 
-        // Vérifier que le template existe
+        // Vérifier que le template contient bien les fichiers essentiels
         try {
-            await fs.access(templatePath);
+            await fs.access(path.join(templatePath, 'setup-server.js'));
         } catch {
             return res.status(500).json({
                 error: 'Template introuvable',
-                details: `Le dossier TEMPLATE_APP doit être dans C:\\Users\\oscar\\APPS\\TEMPLATE_APP`
+                details: `Impossible de trouver les fichiers du template dans: ${templatePath}`
             });
         }
 
@@ -114,7 +113,9 @@ app.post('/api/create-project', async (req, res) => {
             'setup-server.js',
             'setup-new-project.bat',
             '.saved-token.json',
-            '.git'
+            '.git',
+            '.env',           // Ne pas copier les .env locaux
+            '.env.example'    // On va le recréer proprement
         ]);
 
         // Créer le fichier .env
@@ -123,12 +124,23 @@ app.post('/api/create-project', async (req, res) => {
 NODE_ENV=development
 PORT=3000
 DATA_PATH=./data
+`;
 
+        if (githubRepo && githubToken) {
+            envContent += `
 # GitHub
 GITHUB_TOKEN=${githubToken}
 GITHUB_REPO=${githubRepo}
-
 `;
+        } else {
+            envContent += `
+# GitHub (Non configuré lors du setup)
+# GITHUB_TOKEN=
+# GITHUB_REPO=
+`;
+        }
+
+        envContent += '\n';
 
         // Ajouter les secrets supplémentaires
         if (extraSecrets) {
@@ -148,7 +160,7 @@ DATA_PATH=./data
 
 # GitHub
 GITHUB_TOKEN=your_github_token_here
-GITHUB_REPO=${githubRepo}
+GITHUB_REPO=${githubRepo || 'username/repo'}
 `;
         await fs.writeFile(path.join(projectPath, '.env.example'), envExampleContent);
 
@@ -198,12 +210,18 @@ GITHUB_REPO=${githubRepo}
 
         // Personnaliser le README
         const readmePath = path.join(projectPath, 'README.md');
-        let readme = await fs.readFile(readmePath, 'utf-8');
-        readme = readme.replace(/\[Nom du Projet\]/g, projectName);
-        await fs.writeFile(readmePath, readme);
+        try {
+            let readme = await fs.readFile(readmePath, 'utf-8');
+            readme = readme.replace(/\[Nom du Projet\]/g, projectName);
+            await fs.writeFile(readmePath, readme);
+        } catch (e) {
+            // Ignorer si pas de README
+        }
 
-        // Sauvegarder le token pour la prochaine fois
-        await fs.writeFile(TOKEN_FILE, JSON.stringify({ token: githubToken }, null, 2));
+        // Sauvegarder le token pour la prochaine fois seulement s'il existe
+        if (githubToken) {
+            await fs.writeFile(TOKEN_FILE, JSON.stringify({ token: githubToken }, null, 2));
+        }
 
         console.log('[SUCCESS] ✅ Projet créé avec succès !');
 

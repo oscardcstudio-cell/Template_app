@@ -13,6 +13,43 @@ document.addEventListener('DOMContentLoaded', () => {
         tokenInput.type = e.target.checked ? 'text' : 'password';
     });
 
+    // Event listener pour le bouton copier
+    document.getElementById('copyBtn').addEventListener('click', () => {
+        const projectName = document.getElementById('projectName').value;
+        if (projectName) {
+            navigator.clipboard.writeText(projectName).then(() => {
+                const btn = document.getElementById('copyBtn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '✅';
+                setTimeout(() => btn.innerHTML = originalText, 2000);
+            });
+        }
+    });
+
+    // Event listener pour activer/désactiver GitHub
+    document.getElementById('enableGithub').addEventListener('change', (e) => {
+        const isEnabled = e.target.checked;
+        const githubSection = document.getElementById('githubSection');
+        const githubTokenSection = document.getElementById('githubTokenSection');
+        const githubSkippedMsg = document.getElementById('githubSkippedMsg');
+
+        // Gérer l'affichage
+        if (isEnabled) {
+            githubSection.style.display = 'block';
+            githubSection.style.opacity = '1';
+            githubSection.style.pointerEvents = 'auto'; // Réactiver les interactions
+
+            githubTokenSection.style.display = 'block';
+            githubSkippedMsg.style.display = 'none';
+        } else {
+            githubSection.style.opacity = '0.5';
+            githubSection.style.pointerEvents = 'none'; // Désactiver les interactions
+
+            githubTokenSection.style.display = 'none';
+            githubSkippedMsg.style.display = 'block';
+        }
+    });
+
     // Charger le token sauvegardé
     loadSavedToken();
 });
@@ -124,10 +161,13 @@ function validateStep(step) {
         }
     }
 
-    if (step === 3) {
+    // Vérifier si GitHub est activé
+    const isGithubEnabled = document.getElementById('enableGithub').checked;
+
+    if (step === 3 && isGithubEnabled) {
         const githubRepo = document.getElementById('githubRepo').value.trim();
         if (!githubRepo) {
-            alert('❌ Le repo GitHub est requis ! Suis le tutoriel pour en créer un.');
+            alert('❌ Le repo GitHub est requis ! (Ou décoche "Configurer GitHub")');
             return false;
         }
         if (!githubRepo.includes('/')) {
@@ -136,10 +176,10 @@ function validateStep(step) {
         }
     }
 
-    if (step === 4) {
+    if (step === 4 && isGithubEnabled) {
         const githubToken = document.getElementById('githubToken').value.trim();
         if (!githubToken) {
-            alert('❌ Le token GitHub est requis ! Suis le tutoriel pour en créer un.');
+            alert('❌ Le token GitHub est requis ! (Ou décoche "Configurer GitHub" à l\'étape précédente)');
             return false;
         }
     }
@@ -176,9 +216,11 @@ function showSummary() {
     currentStep++;
 
     const projectName = document.getElementById('projectName').value.trim() || '(non défini)';
-    const destinationPath = document.getElementById('destinationPath').value.trim() || 'C:\\Users\\oscar\\APPS';
-    const githubRepo = document.getElementById('githubRepo').value.trim() || '(non défini)';
-    const githubToken = document.getElementById('githubToken').value.trim();
+    const destinationPath = document.getElementById('destinationPath').value.trim() || '(Défaut)';
+
+    const isGithubEnabled = document.getElementById('enableGithub').checked;
+    const githubRepo = isGithubEnabled ? (document.getElementById('githubRepo').value.trim() || '(non défini)') : '(Désactivé)';
+    const githubToken = isGithubEnabled ? document.getElementById('githubToken').value.trim() : null;
 
     // Collecter les secrets
     const secretInputs = document.querySelectorAll('.secret-key');
@@ -195,13 +237,15 @@ function showSummary() {
     let summaryHTML = '';
 
     summaryHTML += createSummaryItem('📝 Nom du projet', projectName);
-    summaryHTML += createSummaryItem('📁 Destination', `${destinationPath}\\${projectName}`);
-    summaryHTML += createSummaryItem('🔗 GitHub Repo', githubRepo);
+    summaryHTML += createSummaryItem('📁 Destination', destinationPath === '(Défaut)' ? `[Dossier Utilisateur]\\APPS\\${projectName}` : `${destinationPath}\\${projectName}`);
 
-    if (githubToken) {
-        summaryHTML += createSummaryItem('🔑 GitHub Token', `${githubToken.substring(0, 10)}... (masqué)`, true);
+    if (isGithubEnabled) {
+        summaryHTML += createSummaryItem('🔗 GitHub Repo', githubRepo);
+        if (githubToken) {
+            summaryHTML += createSummaryItem('🔑 GitHub Token', `${githubToken.substring(0, 10)}... (masqué)`, true);
+        }
     } else {
-        summaryHTML += createSummaryItem('🔑 GitHub Token', '(non fourni - auto-sync désactivé)');
+        summaryHTML += createSummaryItem('🔗 GitHub', '❌ Configuration ignorée (Mode Local)');
     }
 
     if (Object.keys(extraSecrets).length > 0) {
@@ -239,9 +283,11 @@ async function createProject() {
 
     // Collecter les données
     const projectName = document.getElementById('projectName').value.trim();
-    const destinationPath = document.getElementById('destinationPath').value.trim() || 'C:\\Users\\oscar\\APPS';
-    const githubRepo = document.getElementById('githubRepo').value.trim();
-    const githubToken = document.getElementById('githubToken').value.trim();
+    const destinationPath = document.getElementById('destinationPath').value.trim(); // Peut être vide
+
+    const isGithubEnabled = document.getElementById('enableGithub').checked;
+    const githubRepo = isGithubEnabled ? document.getElementById('githubRepo').value.trim() : null;
+    const githubToken = isGithubEnabled ? document.getElementById('githubToken').value.trim() : null;
 
     // Collecter les secrets
     const secretInputs = document.querySelectorAll('.secret-key');
