@@ -50,6 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Initialiser l'état (masquer par défaut car décoché)
+    document.getElementById('enableGithub').dispatchEvent(new Event('change'));
+
     // Charger le token sauvegardé
     loadSavedToken();
 });
