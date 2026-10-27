@@ -1,6 +1,12 @@
 # Dependencies
 node_modules/
-package-lock.json
+.venv/
+venv/
+__pycache__/
+.next/
+.cache/
+coverage/
+.playwright-mcp/
 
 # Saved credentials (local only)
 .saved-token.json
@@ -9,6 +15,8 @@ package-lock.json
 .env
 .env.local
 .env.*.local
+.env.*
+!.env.example
 
 # Data directory (sera géré par Railway Volume + auto-sync partiel)
 data/*.json

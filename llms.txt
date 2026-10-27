@@ -1,0 +1,17 @@
+# Template_app
+
+> Template Node/Express pour démarrer un projet sur Railway avec auto-sync GitHub et persistance des données. Dormant.
+
+- [CLAUDE.md](CLAUDE.md): commandes et règles
+- [README.md](README.md): installation, configuration, structure
+- [AI_INSTRUCTIONS.md](AI_INSTRUCTIONS.md): consignes IA pour un projet issu du template
+- [AI_CONTEXT.md](AI_CONTEXT.md): contexte projet pour IA
+- [ROADMAP.md](ROADMAP.md): déploiement Railway pas à pas
+- [.env.example](.env.example): variables d'environnement
+
+## Fichiers > 300 lignes
+- init-project.js: assistant de configuration d'un nouveau projet (npm run init)
+- setup-server.js: serveur local de l'interface setup-ui pour créer un projet
+
+## Gotchas
+- package.json déclare la licence MIT mais le dépôt n'a pas de fichier LICENSE.
