@@ -153,10 +153,6 @@ railway logs
 
 - [ ] [Ajouter tes TODOs ici]
 
-## 📄 Licence
-
-MIT
-
 ---
 
 **Hamdoulilah, tout est prêt ! 🎉**
